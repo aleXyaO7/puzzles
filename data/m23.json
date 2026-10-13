@@ -1,0 +1,26 @@
+{
+  "id": "m23",
+  "n": 60,
+  "title": "Splitting a Twelfth",
+  "category": "math",
+  "difficulty": 3,
+  "statement": "How many ordered pairs of positive integers $(x, y)$ satisfy $\\dfrac1x + \\dfrac1y = \\dfrac1{12}$?",
+  "answer": "15",
+  "answerValue": 15,
+  "insight": "Clear denominators and complete the product: xy − 12x − 12y = 0 becomes (x − 12)(y − 12) = 144, so solutions match divisors of 144.",
+  "techniques": [
+    "completing-the-product",
+    "divisor-counting"
+  ],
+  "redHerring": "Bounding x and testing values one by one.",
+  "hints": [
+    "Multiply through by $12xy$.",
+    "Add a constant to both sides of $xy - 12x - 12y = 0$ so the left side factors.",
+    "$(x-12)(y-12) = 144$. Can the factors be negative? How many divisors does $144$ have?"
+  ],
+  "solution": "$12y + 12x = xy$, so $(x-12)(y-12) = 144$. Both $x, y > 12$ (since $\\tfrac1x < \\tfrac1{12}$), so both factors are positive. Ordered pairs correspond to positive divisors of $144 = 2^4\\cdot3^2$: $(4+1)(2+1) = 15$.",
+  "verify": {
+    "kind": "exact",
+    "code": "function run(){\n  let c = 0;\n  for (let x = 1; x <= 100000; x++) {\n    const num = 12 * x, den = x - 12;     // y = 12x / (x - 12)\n    if (den > 0 && num % den === 0) c++;\n  }\n  return c;\n}"
+  }
+}

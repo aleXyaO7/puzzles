@@ -1,0 +1,26 @@
+{
+  "id": "p24",
+  "n": 44,
+  "title": "One Extra Coin",
+  "category": "probability",
+  "difficulty": 3,
+  "statement": "Alice flips $51$ fair coins and Bob flips $50$. What is the probability that Alice gets strictly more heads than Bob?",
+  "answer": "1/2",
+  "answerValue": 0.5,
+  "insight": "Set Alice's extra coin aside. After comparing 50 against 50, Alice is ahead or behind with equal probability; on a tie her extra coin decides.",
+  "techniques": [
+    "symmetry",
+    "condition-on-the-extra-piece"
+  ],
+  "redHerring": "Summing binomial products over all head counts.",
+  "hints": [
+    "Hold back one of Alice's coins.",
+    "Compare 50 coins against 50 coins. Call the three outcomes ahead, tied and behind.",
+    "Alice also has more tails than Bob exactly when... Is there a symmetry between heads and tails?"
+  ],
+  "solution": "Let Alice have $a$ heads and Bob $b$. Alice has more heads iff $a > b$. She has more tails iff $51-a > 50-b$, i.e. $a \\le b$. Exactly one of these happens, and by heads–tails symmetry they are equally likely: $\\tfrac12$ each.\n\n(Equivalently: set Alice's last coin aside. If the first 50 against 50 are tied, that coin decides; otherwise it can't change the result. Ahead and behind are equally likely.)",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  const heads = k => { let h = 0; for (let i = 0; i < k; i++) if (Math.random() < 0.5) h++; return h; };\n  return mc(200000, () => heads(51) > heads(50) ? 1 : 0);\n}"
+  }
+}

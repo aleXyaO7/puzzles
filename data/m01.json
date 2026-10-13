@@ -1,0 +1,25 @@
+{
+  "id": "m01",
+  "n": 20,
+  "title": "The Mutilated Chessboard",
+  "category": "math",
+  "difficulty": 1,
+  "statement": "Two diagonally opposite corner squares are removed from an $8\\times8$ chessboard. In how many ways can the remaining $62$ squares be tiled by $31$ dominoes?",
+  "answer": "0",
+  "answerValue": 0,
+  "insight": "Every domino covers one black and one white square, but both removed corners are the same colour.",
+  "techniques": [
+    "coloring-invariant"
+  ],
+  "redHerring": "Trying to construct a tiling or count them with a transfer matrix.",
+  "hints": [
+    "Colour the board as a chessboard. What does each domino cover?",
+    "What colour are the two removed squares?",
+    "Count black and white squares that remain."
+  ],
+  "solution": "Each domino covers one black and one white square, so any tiling covers equally many of each. Opposite corners share a colour, so the remaining board has 30 squares of one colour and 32 of the other. No tiling exists: the answer is $0$.",
+  "verify": {
+    "kind": "exact",
+    "code": "function run(){\n  // Count tilings by brute-force profile DP (no colouring argument used).\n  const R = 8, C = 8;\n  const blocked = (r, c) => (r === 0 && c === 0) || (r === 7 && c === 7);\n  let dp = new Map([[0, 1]]);\n  for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) {\n    const next = new Map(), add = (k, v) => next.set(k, (next.get(k) || 0) + v);\n    for (const [mask, ways] of dp) {\n      const filled = (mask & 1) || blocked(r, c);\n      const rest = mask >> 1;\n      if (filled) { if ((mask & 1) && blocked(r, c)) continue; add(rest, ways); continue; }\n      if (r + 1 < R && !blocked(r + 1, c)) add(rest | (1 << (C - 1)), ways);            // vertical\n      if (c + 1 < C && !blocked(r, c + 1) && !(rest & 1)) add(rest | 1, ways);           // horizontal\n    }\n    dp = next;\n  }\n  return dp.get(0) || 0;\n}"
+  }
+}

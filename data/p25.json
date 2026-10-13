@@ -1,0 +1,26 @@
+{
+  "id": "p25",
+  "n": 45,
+  "title": "One Step from the Cliff",
+  "category": "probability",
+  "difficulty": 3,
+  "statement": "A drunk stands one step from the edge of a cliff. Each step, they move toward the cliff with probability $\\tfrac13$ and away from it with probability $\\tfrac23$, independently. What is the probability that they eventually fall off?",
+  "answer": "1/2",
+  "answerValue": 0.5,
+  "insight": "Getting from 2 steps away to the edge means getting one step closer twice. That gives the self-similar equation P = 1/3 + (2/3)P².",
+  "techniques": [
+    "self-similarity",
+    "first-step-analysis"
+  ],
+  "redHerring": "Summing over all path lengths with a combinatorial count of paths.",
+  "hints": [
+    "Let $P$ be the probability of ever reaching the edge from 1 step away.",
+    "From 2 steps away, reaching the edge requires first reaching 1 step away. What is the probability of that?",
+    "$P = \\tfrac13 + \\tfrac23P^2$. Which root is the right one?"
+  ],
+  "solution": "Let $P$ = probability of ever moving one step closer, starting anywhere. From 2 steps away, you need to do this twice, independently: $P^2$.\n\nSo $P = \\tfrac13 + \\tfrac23P^2$, i.e. $2P^2 - 3P + 1 = 0$, giving $P\\in\\{\\tfrac12, 1\\}$. Because the walk drifts away from the cliff, $P<1$. A standard argument shows the true value is the smallest non-negative root. So $P = \\tfrac12$.",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  // Stop once he is 80 steps away; falling from there has probability 2^-80.\n  return mc(300000, () => {\n    let d = 1;\n    while (d > 0 && d < 80) d += Math.random() < 1 / 3 ? -1 : 1;\n    return d === 0 ? 1 : 0;\n  });\n}"
+  }
+}

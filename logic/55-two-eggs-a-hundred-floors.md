@@ -1,0 +1,69 @@
+# Two Eggs, A Hundred Floors
+
+**Logic** · difficulty ●●●○ · `l06`
+
+You have $2$ identical eggs and a $100$-storey building. There is some floor $F$ (possibly $0$, possibly $100$) such that an egg dropped from floor $F$ or below survives and from above $F$ breaks. A broken egg can't be reused. What is the minimum number of drops that guarantees finding $F$ in the worst case?
+
+<details>
+<summary>Hint 1</summary>
+
+With one egg left, you must test floor by floor. How does that limit your first egg's jumps?
+
+</details>
+
+<details>
+<summary>Hint 2</summary>
+
+If the first drop is from floor $x$ and the egg breaks, you need up to $x-1$ more drops. So with $d$ drops in total, $x \le d$.
+
+</details>
+
+<details>
+<summary>Hint 3</summary>
+
+After a safe drop you have $d-1$ drops left, so the next jump can be at most $d-1$ floors. How many floors can $d$ drops cover?
+
+</details>
+
+<details>
+<summary>Key idea</summary>
+
+Think in reverse: with d drops left you should be able to cover d + (d−1) + … + 1 floors, so the step size should shrink by one after each safe drop. You need the smallest d with d(d+1)/2 ≥ 100.
+
+**Tempting dead end:** Using equal steps of 10 floors, which needs 19 drops in the worst case.
+
+**Techniques:** `count-what-k-moves-can-cover`, `decreasing-steps`
+
+</details>
+
+<details>
+<summary>Solution</summary>
+
+**Answer: 14**
+
+With $d$ drops available, the first drop can be at most from floor $d$ (if it breaks, $d-1$ floor-by-floor tests remain). If it survives, you have $d-1$ drops, so the next jump is at most $d-1$ floors, and so on. In total $d$ drops cover $d+(d-1)+\dots+1 = \tfrac{d(d+1)}2$ floors.
+
+$\tfrac{13\cdot14}2 = 91 < 100 \le 105 = \tfrac{14\cdot15}2$, so the answer is $14$. For example, drop from floors 14, 27, 39, 50, ….
+
+</details>
+
+<details>
+<summary>Independent check (exhaustive computation)</summary>
+
+Run `node scripts/verify.mjs l06` from the repo root.
+
+```js
+function run(){
+  // Exhaustive minimax: f[e][n] = worst-case drops with e eggs and n untested floors.
+  const N = 100;
+  const f = [new Array(N + 1).fill(0), range(0, N), new Array(N + 1).fill(0)];
+  for (let n = 1; n <= N; n++) {
+    let best = Infinity;
+    for (let x = 1; x <= n; x++) best = Math.min(best, 1 + Math.max(f[1][x - 1], f[2][n - x]));
+    f[2][n] = best;
+  }
+  return f[2][N];
+}
+```
+
+</details>

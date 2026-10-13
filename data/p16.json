@@ -1,0 +1,26 @@
+{
+  "id": "p16",
+  "n": 16,
+  "title": "Coprime by Chance",
+  "category": "probability",
+  "difficulty": 3,
+  "statement": "Two positive integers are chosen independently and uniformly from $\\{1,\\dots,N\\}$. As $N\\to\\infty$, what does the probability that they are coprime approach? (Give a decimal.)",
+  "answer": "6/π² ≈ 0.6079",
+  "answerValue": 0.6079271018540267,
+  "insight": "Coprime means no prime divides both; divisibility by different primes is asymptotically independent, so multiply (1 − 1/p²) over primes.",
+  "techniques": [
+    "independence-over-primes",
+    "euler-product"
+  ],
+  "redHerring": "Counting pairs with gcd 1 directly with inclusion–exclusion over all integers, without seeing the product.",
+  "hints": [
+    "What is the probability that a fixed prime $p$ divides both numbers?",
+    "Coprime means this fails for every prime. Treat the primes as independent.",
+    "$\\prod_p (1 - p^{-2}) = 1/\\zeta(2)$, and $\\zeta(2) = \\pi^2/6$."
+  ],
+  "solution": "A prime $p$ divides both numbers with probability $\\tfrac1{p^2}$, and these events are asymptotically independent across primes. So\n\n$P(\\text{coprime}) = \\prod_p\\left(1 - \\tfrac1{p^2}\\right) = \\tfrac1{\\zeta(2)} = \\tfrac6{\\pi^2} \\approx 0.6079$,\n\nusing the Euler product $\\zeta(s) = \\prod_p (1-p^{-s})^{-1}$.",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  const N = 1e9;\n  return mc(400000, () => gcd(randInt(1, N), randInt(1, N)) === 1 ? 1 : 0);\n}"
+  }
+}

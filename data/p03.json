@@ -1,0 +1,26 @@
+{
+  "id": "p03",
+  "n": 3,
+  "title": "Letters in the Wrong Envelopes",
+  "category": "probability",
+  "difficulty": 1,
+  "statement": "A secretary puts $100$ letters into $100$ addressed envelopes completely at random, one letter per envelope. What is the expected number of letters that end up in their correct envelope?",
+  "answer": "1",
+  "answerValue": 1,
+  "insight": "Write the count as a sum of indicators, one per letter. Linearity of expectation ignores the dependence between them.",
+  "techniques": [
+    "linearity-of-expectation",
+    "indicators"
+  ],
+  "redHerring": "Computing the full distribution of fixed points (derangement numbers) before taking the mean.",
+  "hints": [
+    "Write the number of correct letters as a sum of 100 simpler random variables.",
+    "Let $I_k = 1$ if letter $k$ is correct. What is $E[I_k]$?",
+    "Expectation is linear even when the $I_k$ are dependent."
+  ],
+  "solution": "Let $I_k$ indicate that letter $k$ lands in its own envelope. Letter $k$ is equally likely to be in any of the 100 envelopes, so $E[I_k] = \\tfrac1{100}$.\n\n$E\\left[\\sum I_k\\right] = \\sum E[I_k] = 100\\cdot\\tfrac1{100} = 1$. The $I_k$ are dependent, but linearity does not care.",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  const n = 100;\n  return mc(60000, () => {\n    const p = shuffle(range(0, n - 1));\n    let c = 0; for (let i = 0; i < n; i++) if (p[i] === i) c++;\n    return c;\n  });\n}"
+  }
+}

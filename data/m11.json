@@ -1,0 +1,26 @@
+{
+  "id": "m11",
+  "n": 30,
+  "title": "A Collapsing Sum",
+  "category": "math",
+  "difficulty": 1,
+  "statement": "Evaluate $\\displaystyle\\sum_{k=1}^{99}\\frac{1}{k(k+1)}$.",
+  "answer": "99/100",
+  "answerValue": 0.99,
+  "insight": "1/(k(k+1)) = 1/k − 1/(k+1), so the sum telescopes.",
+  "techniques": [
+    "telescoping",
+    "partial-fractions"
+  ],
+  "redHerring": "Looking for a pattern in the first few partial sums without explaining it.",
+  "hints": [
+    "Split $\\tfrac1{k(k+1)}$ into a difference of two simpler fractions.",
+    "$\\tfrac1{k(k+1)} = \\tfrac1k - \\tfrac1{k+1}$.",
+    "Write out the first few terms: what cancels?"
+  ],
+  "solution": "$\\tfrac1{k(k+1)} = \\tfrac1k - \\tfrac1{k+1}$. The sum is $(1-\\tfrac12)+(\\tfrac12-\\tfrac13)+\\dots+(\\tfrac1{99}-\\tfrac1{100}) = 1 - \\tfrac1{100} = \\tfrac{99}{100}$.",
+  "verify": {
+    "kind": "exact",
+    "code": "function run(){\n  // Exact rational arithmetic with BigInt.\n  let p = 0n, q = 1n;\n  const g = (a, b) => { while (b) [a, b] = [b, a % b]; return a; };\n  for (let k = 1n; k <= 99n; k++) { const d = k * (k + 1n); p = p * d + q; q = q * d; const h = g(p, q); p /= h; q /= h; }\n  return Number(p) / Number(q);\n}"
+  }
+}

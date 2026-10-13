@@ -1,0 +1,27 @@
+{
+  "id": "p01",
+  "n": 1,
+  "title": "Three Pieces of Stick",
+  "category": "probability",
+  "difficulty": 1,
+  "statement": "A stick of length $1$ is broken at two points chosen independently and uniformly at random. What is the probability that the three pieces can form a triangle?",
+  "answer": "1/4",
+  "answerValue": 0.25,
+  "insight": "A triangle fails exactly when one piece exceeds 1/2, and at most one piece can, so the failure events are disjoint.",
+  "techniques": [
+    "complementary-counting",
+    "disjoint-events",
+    "geometric-probability"
+  ],
+  "redHerring": "Splitting into cases on which break point is left and integrating each triangle inequality separately.",
+  "hints": [
+    "What single condition on the longest piece decides whether a triangle exists?",
+    "A triangle is impossible exactly when some piece is longer than 1/2. Can two pieces both be longer than 1/2?",
+    "The left piece exceeds 1/2 exactly when both break points land in the right half."
+  ],
+  "solution": "Three lengths summing to $1$ form a triangle iff every piece is shorter than $\\tfrac12$. The events \"piece $i$ is longer than $\\tfrac12$\" are disjoint, since two such pieces would already sum past $1$.\n\nThe left piece exceeds $\\tfrac12$ iff both points lie in $(\\tfrac12,1)$: probability $\\tfrac14$. Same for the right piece. The middle piece exceeds $\\tfrac12$ iff $|X-Y|>\\tfrac12$, whose region in the unit square is two triangles of area $\\tfrac18$: again $\\tfrac14$.\n\nSo $P(\\text{fail}) = \\tfrac34$ and $P(\\text{triangle}) = \\tfrac14$.",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  return mc(400000, () => {\n    const x = Math.random(), y = Math.random();\n    const a = Math.min(x, y), b = Math.max(x, y);\n    return Math.max(a, b - a, 1 - b) < 0.5 ? 1 : 0;\n  });\n}"
+  }
+}

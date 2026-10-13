@@ -1,0 +1,26 @@
+{
+  "id": "m08",
+  "n": 27,
+  "title": "Dominoes in a Corridor",
+  "category": "math",
+  "difficulty": 2,
+  "statement": "In how many ways can a $2\\times10$ strip be tiled with $1\\times2$ dominoes?",
+  "answer": "89",
+  "answerValue": 89,
+  "insight": "Look at the right end: it is either one vertical domino or two stacked horizontals, so T(n) = T(n−1) + T(n−2).",
+  "techniques": [
+    "recursion-on-last-piece",
+    "fibonacci"
+  ],
+  "redHerring": "Counting by the number of horizontal pairs with binomial sums (it works, but it's slower).",
+  "hints": [
+    "How can the rightmost column be covered?",
+    "If one horizontal domino sticks into the last column, what must sit beneath it?",
+    "$T(n) = T(n-1) + T(n-2)$ with $T(1) = 1$, $T(2) = 2$."
+  ],
+  "solution": "The last column is covered by either a vertical domino (leaving a $2\\times(n-1)$ strip) or two horizontal dominoes stacked (leaving $2\\times(n-2)$). So $T(n) = T(n-1) + T(n-2)$ with $T(1)=1$, $T(2)=2$: $1,2,3,5,8,13,21,34,55,89$. Answer: $89$.",
+  "verify": {
+    "kind": "exact",
+    "code": "function run(){\n  // Backtracking over actual placements, not the recurrence.\n  const W = 10, g = [new Array(W).fill(false), new Array(W).fill(false)];\n  function go() {\n    let r = -1, c = -1;\n    outer: for (let j = 0; j < W; j++) for (let i = 0; i < 2; i++) if (!g[i][j]) { r = i; c = j; break outer; }\n    if (r < 0) return 1;\n    let n = 0;\n    if (r === 0 && !g[1][c]) { g[0][c] = g[1][c] = true; n += go(); g[0][c] = g[1][c] = false; }\n    if (c + 1 < W && !g[r][c + 1]) { g[r][c] = g[r][c + 1] = true; n += go(); g[r][c] = g[r][c + 1] = false; }\n    return n;\n  }\n  return go();\n}"
+  }
+}

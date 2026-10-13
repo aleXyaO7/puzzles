@@ -1,0 +1,26 @@
+{
+  "id": "p08",
+  "n": 8,
+  "title": "Past One",
+  "category": "probability",
+  "difficulty": 2,
+  "statement": "You draw independent uniform random numbers from $[0,1]$ until their running sum exceeds $1$. What is the expected number of draws?",
+  "answer": "e ≈ 2.71828",
+  "answerValue": 2.718281828459045,
+  "insight": "Use E[N] = Σ P(N > n); the event N > n is the first n draws summing to at most 1, a simplex of volume 1/n!.",
+  "techniques": [
+    "tail-sum-formula",
+    "simplex-volume"
+  ],
+  "redHerring": "Computing P(N = n) directly by integrating over where the sum crosses 1.",
+  "hints": [
+    "For a positive integer variable, $E[N] = \\sum_{n\\ge0} P(N>n)$.",
+    "$N > n$ means the first $n$ draws sum to at most 1.",
+    "The region $x_1+\\dots+x_n \\le 1$, $x_i\\ge0$ is a simplex. What is its volume?"
+  ],
+  "solution": "$N > n$ iff $U_1+\\dots+U_n \\le 1$, which is the corner simplex of the unit cube with volume $\\tfrac1{n!}$.\n\n$E[N] = \\sum_{n\\ge0} P(N>n) = \\sum_{n\\ge0}\\tfrac1{n!} = e$.",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  return mc(400000, () => {\n    let s = 0, n = 0;\n    while (s <= 1) { s += Math.random(); n++; }\n    return n;\n  });\n}"
+  }
+}

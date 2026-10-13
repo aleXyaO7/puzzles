@@ -1,0 +1,26 @@
+{
+  "id": "p27",
+  "n": 47,
+  "title": "Rounds of Hat Swapping",
+  "category": "probability",
+  "difficulty": 4,
+  "statement": "$10$ people throw their hats into a pile. Each round, everyone still present grabs a uniformly random hat from the pile (a random permutation of the remaining hats). Everyone who got their own hat leaves with it; everyone else throws their hat back. What is the expected number of rounds until everyone has left?",
+  "answer": "10",
+  "answerValue": 10,
+  "insight": "Each round removes 1 person on average (expected fixed points = 1), so X_t + t is a martingale and the expected stopping time equals the starting count.",
+  "techniques": [
+    "martingale",
+    "linearity-of-expectation"
+  ],
+  "redHerring": "Writing a recursion over the number of people remaining, which needs the full derangement distribution.",
+  "hints": [
+    "How many people leave in one round, on average, whatever the number present?",
+    "Let $X_t$ be the number present after $t$ rounds. What is $E[X_{t+1}\\mid X_t]$ when $X_t>0$?",
+    "Look for a quantity combining $X_t$ and $t$ whose expected value never changes."
+  ],
+  "solution": "With $m\\ge1$ people present, the expected number who get their own hat is exactly $1$, whatever $m$ is. So $M_t = X_t + t$ is a martingale until everyone has left.\n\nAt the stopping time $T$, $X_T = 0$. By optional stopping, $E[T] = E[M_T] = M_0 = 10$.",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  return mc(150000, () => {\n    let people = range(0, 9), rounds = 0;\n    while (people.length) {\n      rounds++;\n      const hats = shuffle(people.slice());\n      people = people.filter((p, i) => hats[i] !== p);\n    }\n    return rounds;\n  });\n}"
+  }
+}

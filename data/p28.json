@@ -1,0 +1,26 @@
+{
+  "id": "p28",
+  "n": 48,
+  "title": "Hiring the Best of Ten",
+  "category": "probability",
+  "difficulty": 4,
+  "statement": "$10$ candidates are interviewed in uniformly random order. After each interview you know only how the candidate ranks among those seen so far. You must hire or reject on the spot, and you can't return to a rejected candidate. You want to maximise the probability of hiring the single best candidate. What is that maximum probability? (Give a decimal.)",
+  "answer": "0.3 · (H₉ − H₂) ≈ 0.3987",
+  "answerValue": 0.3986904761904761,
+  "insight": "Only hiring someone who is the best so far can be right, and the i-th candidate being best so far is independent of the earlier order, so the optimal rule is a cutoff: reject the first r−1, then take the first best-so-far.",
+  "techniques": [
+    "optimal-stopping",
+    "threshold-rule"
+  ],
+  "redHerring": "Simulating many ad hoc rules instead of first proving the optimal rule must be a cutoff.",
+  "hints": [
+    "You should only ever hire a candidate who is the best so far. If candidate $i$ is the best so far, what is the chance they are best overall?",
+    "That chance, $i/n$, grows with $i$, while the value of waiting shrinks. So the best rule is a cutoff.",
+    "With cutoff $r$, the rule wins iff the best overall is at some $j\\ge r$ and the best among the first $j-1$ is among the first $r-1$. Sum over $j$."
+  ],
+  "solution": "If candidate $i$ is the best so far, they are best overall with probability $\\tfrac in$. Stopping becomes more attractive over time while continuing becomes less valuable, so the optimal rule is: reject the first $r-1$, then hire the first candidate who beats all before.\n\nWith cutoff $r$: the best overall is at position $j\\ge r$ (probability $\\tfrac1n$ each), and you reach it iff the best among the first $j-1$ is among the first $r-1$ (probability $\\tfrac{r-1}{j-1}$). So $P(r) = \\tfrac{r-1}{n}\\sum_{j=r}^{n}\\tfrac1{j-1}$.\n\nFor $n=10$ this is maximised at $r=4$: $P = \\tfrac3{10}\\left(\\tfrac13+\\dots+\\tfrac19\\right) \\approx 0.3987$. As $n\\to\\infty$ it tends to $1/e$.",
+  "verify": {
+    "kind": "exact",
+    "code": "function run(){\n  // Backward induction over all stopping rules (not only cutoffs).\n  // W = value of optimal play from just before candidate i+1 is seen.\n  const n = 10; let W = 0;\n  for (let i = n; i >= 1; i--) W = (1 / i) * Math.max(i / n, W) + (1 - 1 / i) * W;\n  return W;\n}"
+  }
+}

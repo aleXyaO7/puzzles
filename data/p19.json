@@ -1,0 +1,26 @@
+{
+  "id": "p19",
+  "n": 19,
+  "title": "Waiting at the Bus Stop",
+  "category": "probability",
+  "difficulty": 2,
+  "statement": "Buses arrive at a stop as a Poisson process with an average gap of $10$ minutes. You arrive at a random time. What is the expected length, in minutes, of the gap between the bus before you and the bus after you?",
+  "answer": "20",
+  "answerValue": 20,
+  "insight": "You are more likely to land in a long gap. With memorylessness, the time back to the last bus and forward to the next are each 10 on average.",
+  "techniques": [
+    "inspection-paradox",
+    "memorylessness"
+  ],
+  "redHerring": "Answering 10 because the average gap is 10.",
+  "hints": [
+    "Is the gap you land in a typical gap?",
+    "How long do you expect to wait for the next bus? Does the past matter?",
+    "Run time backwards: how long ago was the previous bus?"
+  ],
+  "solution": "By memorylessness, the wait until the next bus is exponential with mean 10. Reversing time, a Poisson process looks the same, so the time since the previous bus is also exponential with mean 10.\n\nThe gap you sit in has expected length $10 + 10 = 20$. Long gaps cover more of the timeline, so a random time is more likely to land in one (size-biased sampling).",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  const T = 2e6, times = [0];\n  while (times[times.length - 1] < T) times.push(times[times.length - 1] - 10 * Math.log(1 - Math.random()));\n  return mc(20000, () => {\n    const t = 1000 + Math.random() * (T - 2000);\n    let lo = 0, hi = times.length - 1;\n    while (hi - lo > 1) { const m = (lo + hi) >> 1; if (times[m] <= t) lo = m; else hi = m; }\n    return times[hi] - times[lo];\n  });\n}"
+  }
+}

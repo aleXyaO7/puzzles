@@ -1,0 +1,26 @@
+{
+  "id": "p15",
+  "n": 15,
+  "title": "The Smallest of Three",
+  "category": "probability",
+  "difficulty": 2,
+  "statement": "Three numbers are drawn independently and uniformly from $[0,1]$. What is the expected value of the smallest one?",
+  "answer": "1/4",
+  "answerValue": 0.25,
+  "insight": "Three random points cut the interval into four gaps that are exchangeable, so each has expected length 1/4.",
+  "techniques": [
+    "spacings-symmetry",
+    "order-statistics"
+  ],
+  "redHerring": "Differentiating P(min > t) = (1−t)^3 and integrating.",
+  "hints": [
+    "The smallest value is the length of a particular gap.",
+    "Three points split $[0,1]$ into four pieces. Is any piece special?",
+    "Think of 4 points on a circle of circumference 1, one of which is the cut."
+  ],
+  "solution": "Place 4 uniform points on a circle of circumference 1 and cut at one of them. The other three are uniform on $[0,1]$, and the four arcs between consecutive points are exchangeable by symmetry. The arcs sum to 1, so each has mean $\\tfrac14$. The first gap is the minimum: $E[\\min] = \\tfrac14$, and in general $\\tfrac1{n+1}$.",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  return mc(400000, () => Math.min(Math.random(), Math.random(), Math.random()));\n}"
+  }
+}

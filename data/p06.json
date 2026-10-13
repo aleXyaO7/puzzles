@@ -1,0 +1,26 @@
+{
+  "id": "p06",
+  "n": 6,
+  "title": "Three Dollars to Ten",
+  "category": "probability",
+  "difficulty": 2,
+  "statement": "You start with \\$3 and repeatedly bet \\$1 on fair coin flips. You stop when you reach \\$0 or \\$10. What is the probability you reach \\$10?",
+  "answer": "3/10",
+  "answerValue": 0.3,
+  "insight": "A fair game keeps your expected fortune constant, including at the stopping time, so 10·p = 3.",
+  "techniques": [
+    "martingale",
+    "optional-stopping"
+  ],
+  "redHerring": "Writing the 9 linear equations for each starting fortune and solving the system by hand.",
+  "hints": [
+    "What is your expected fortune after one bet? After many bets?",
+    "When you stop, your fortune is either 0 or 10.",
+    "Set the expected final fortune equal to the starting fortune."
+  ],
+  "solution": "Each bet is fair, so your expected fortune never changes. The game stops in finite time with a bounded fortune, so the expected final fortune is still \\$3 (optional stopping).\n\nIf $p$ is the chance of reaching \\$10, the expected final fortune is $10p + 0(1-p) = 3$, so $p = \\tfrac{3}{10}$.",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  return mc(300000, () => {\n    let x = 3;\n    while (x > 0 && x < 10) x += Math.random() < 0.5 ? 1 : -1;\n    return x === 10 ? 1 : 0;\n  });\n}"
+  }
+}

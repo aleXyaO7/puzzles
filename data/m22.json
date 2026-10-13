@@ -1,0 +1,26 @@
+{
+  "id": "m22",
+  "n": 59,
+  "title": "Points Inside the Triangle",
+  "category": "math",
+  "difficulty": 3,
+  "statement": "How many points with integer coordinates lie strictly inside the triangle with vertices $(0,0)$, $(20,0)$ and $(0,30)$?",
+  "answer": "271",
+  "answerValue": 271,
+  "insight": "Pick's theorem: Area = I + B/2 − 1. The area is 300 and the boundary has 20 + 30 + gcd(20,30) = 60 lattice points.",
+  "techniques": [
+    "picks-theorem",
+    "gcd-boundary-count"
+  ],
+  "redHerring": "Summing column by column with floor functions.",
+  "hints": [
+    "Is there a formula linking a lattice polygon's area to its lattice points?",
+    "Pick: $A = I + \\tfrac B2 - 1$.",
+    "A segment from $(0,0)$ to $(a,b)$ has $\\gcd(a,b)+1$ lattice points. Count $B$ carefully."
+  ],
+  "solution": "The area is $\\tfrac12\\cdot20\\cdot30 = 300$. Boundary points: the two legs contribute $20$ and $30$ (excluding one endpoint each), and the hypotenuse from $(20,0)$ to $(0,30)$ contributes $\\gcd(20,30)=10$, so $B = 60$.\n\nPick: $I = A - \\tfrac B2 + 1 = 300 - 30 + 1 = 271$.",
+  "verify": {
+    "kind": "exact",
+    "code": "function run(){\n  // Strictly inside: x > 0, y > 0, 30x + 20y < 600.\n  let c = 0;\n  for (let x = 0; x <= 20; x++) for (let y = 0; y <= 30; y++) if (x > 0 && y > 0 && 30 * x + 20 * y < 600) c++;\n  return c;\n}"
+  }
+}

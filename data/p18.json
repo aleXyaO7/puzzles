@@ -1,0 +1,26 @@
+{
+  "id": "p18",
+  "n": 18,
+  "title": "Cycles in a Shuffle",
+  "category": "probability",
+  "difficulty": 2,
+  "statement": "A permutation of $\\{1,\\dots,10\\}$ is chosen uniformly at random. What is the expected number of cycles in it? (Fixed points count as cycles of length 1.)",
+  "answer": "H₁₀ = 7381/2520 ≈ 2.929",
+  "answerValue": 2.9289682539682538,
+  "insight": "Build the permutation by following a cycle: at each step, the next element closes the current cycle with probability 1/(remaining).",
+  "techniques": [
+    "sequential-construction",
+    "linearity-of-expectation"
+  ],
+  "redHerring": "Counting permutations by cycle type with Stirling numbers.",
+  "hints": [
+    "Generate the permutation by tracing cycles: start at 1 and follow $i \\to \\pi(i)$.",
+    "When $k$ elements are still unused (including the current cycle's start), what is the chance the next step closes the cycle?",
+    "Add up those probabilities."
+  ],
+  "solution": "Trace cycles: start at the smallest unused element and repeatedly choose its image among the $k$ elements still available, one of which is the cycle's start. Choosing the start closes the cycle, with probability $\\tfrac1k$. $k$ runs through $10, 9, \\dots, 1$, so\n\n$E[\\#\\text{cycles}] = \\sum_{k=1}^{10}\\tfrac1k = H_{10} = \\tfrac{7381}{2520}\\approx 2.929$.",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  const n = 10;\n  return mc(300000, () => {\n    const p = shuffle(range(0, n - 1)), seen = new Array(n).fill(false);\n    let c = 0;\n    for (let i = 0; i < n; i++) if (!seen[i]) { c++; let j = i; while (!seen[j]) { seen[j] = true; j = p[j]; } }\n    return c;\n  });\n}"
+  }
+}

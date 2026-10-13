@@ -1,0 +1,26 @@
+{
+  "id": "m13",
+  "n": 32,
+  "title": "Change for a Dollar",
+  "category": "math",
+  "difficulty": 2,
+  "statement": "In how many ways can you make $100$ cents using pennies, nickels, dimes and quarters (1, 5, 10, 25 cents)? Order doesn't matter.",
+  "answer": "242",
+  "answerValue": 242,
+  "insight": "Fix the largest coins first: for each choice of quarters and dimes, the nickel count is free and pennies fill the rest, so count nickel options in closed form.",
+  "techniques": [
+    "nested-casework",
+    "generating-functions"
+  ],
+  "redHerring": "Counting ordered sequences of coins, which overcounts.",
+  "hints": [
+    "Pennies can always fill the rest, so they never constrain anything.",
+    "For a remaining amount $r$ after quarters and dimes, how many choices of nickels are there?",
+    "That is $\\lfloor r/5\\rfloor + 1$. Sum over quarters $q$ and dimes $d$."
+  ],
+  "solution": "For $q$ quarters and $d$ dimes with $25q+10d\\le100$, the remainder $r = 100-25q-10d$ allows $\\lfloor r/5\\rfloor+1$ nickel counts, with pennies filling the rest. Summing:\n$q=0$: $\\sum_{d=0}^{10}(21-2d) = 121$;\n$q=1$: $\\sum_{d=0}^{7}(16-2d) = 72$;\n$q=2$: $\\sum_{d=0}^{5}(11-2d) = 36$;\n$q=3$: $\\sum_{d=0}^{2}(6-2d) = 12$;\n$q=4$: $1$.\nTotal $121+72+36+12+1 = 242$.",
+  "verify": {
+    "kind": "exact",
+    "code": "function run(){\n  let c = 0;\n  for (let q = 0; q <= 4; q++) for (let d = 0; d <= 10; d++) for (let n = 0; n <= 20; n++) {\n    const p = 100 - 25 * q - 10 * d - 5 * n;\n    if (p >= 0) c++;\n  }\n  return c;\n}"
+  }
+}

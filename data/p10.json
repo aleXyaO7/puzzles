@@ -1,0 +1,26 @@
+{
+  "id": "p10",
+  "n": 10,
+  "title": "Four Points, One Half",
+  "category": "probability",
+  "difficulty": 2,
+  "statement": "Four points are chosen independently and uniformly on a circle. What is the probability that all four lie within some semicircle?",
+  "answer": "1/2",
+  "answerValue": 0.5,
+  "insight": "Name the point the semicircle starts from: 'all others lie clockwise within π of point i' are disjoint events, each with probability (1/2)^3.",
+  "techniques": [
+    "disjoint-events",
+    "symmetry"
+  ],
+  "redHerring": "Fixing one point and integrating over the arcs to the others in many cases.",
+  "hints": [
+    "If the points fit in a semicircle, there is a natural 'first' point going clockwise.",
+    "Let $E_i$ be the event that the other three points lie within the half circle clockwise from point $i$. Can two $E_i$ happen at once?",
+    "Given point $i$, what is $P(E_i)$?"
+  ],
+  "solution": "If all points lie in a semicircle, exactly one point is the clockwise-first one; call this event $E_i$ for point $i$. The $E_i$ are disjoint (with probability 1).\n\n$P(E_i) = (\\tfrac12)^3$, since each other point independently falls in the half circle clockwise from point $i$. So the probability is $4\\cdot\\tfrac18 = \\tfrac12$. In general it is $n/2^{n-1}$.",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  const TAU = 2 * Math.PI;\n  return mc(300000, () => {\n    const t = [0,0,0,0].map(() => Math.random() * TAU);\n    for (const a of t) {\n      if (t.every(b => ((b - a + TAU) % TAU) <= Math.PI)) return 1;\n    }\n    return 0;\n  });\n}"
+  }
+}

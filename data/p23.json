@@ -1,0 +1,26 @@
+{
+  "id": "p23",
+  "n": 43,
+  "title": "The Spider on the Cube",
+  "category": "probability",
+  "difficulty": 3,
+  "statement": "A spider sits at one corner of a wire-frame cube. Each step, it walks along one of the $3$ edges at its current corner, chosen uniformly at random. What is the expected number of steps until it first reaches the opposite corner?",
+  "answer": "10",
+  "answerValue": 10,
+  "insight": "Lump the 8 corners by distance from the target (3, 2, 1, 0). The walk on distances is a 4-state chain with simple transition probabilities.",
+  "techniques": [
+    "state-lumping",
+    "first-step-analysis"
+  ],
+  "redHerring": "Writing 7 equations, one per corner.",
+  "hints": [
+    "Only the distance to the target matters, by symmetry.",
+    "From distance 3, every step goes to distance 2. From distance 2, what are the chances of going to 1 or back to 3?",
+    "Let $E_d$ be the expected remaining steps at distance $d$. Write three equations."
+  ],
+  "solution": "By symmetry, track the distance $d\\in\\{0,1,2,3\\}$ to the target.\n\n$E_3 = 1 + E_2$; $E_2 = 1 + \\tfrac23E_1 + \\tfrac13E_3$; $E_1 = 1 + \\tfrac13\\cdot0 + \\tfrac23E_2$.\n\nSubstituting $E_3$: $E_2 = \\tfrac43 + \\tfrac23E_1 + \\tfrac13E_2$, so $E_2 = 2 + E_1$. Then $E_1 = 1 + \\tfrac23(2+E_1)$, so $E_1 = 7$, $E_2 = 9$, $E_3 = 10$.",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  // Corners are 3-bit vectors; a step flips one random bit.\n  return mc(300000, () => {\n    let v = 0, n = 0;\n    while (v !== 7) { v ^= 1 << randInt(0, 2); n++; }\n    return n;\n  });\n}"
+  }
+}

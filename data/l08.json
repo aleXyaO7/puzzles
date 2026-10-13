@@ -1,0 +1,25 @@
+{
+  "id": "l08",
+  "n": 57,
+  "title": "Chameleon Colours",
+  "category": "logic",
+  "difficulty": 3,
+  "statement": "An island has $10$ red, $14$ green and $16$ blue chameleons. Whenever two chameleons of different colours meet, both change to the third colour. For how many of the three colours is it possible that, after some sequence of meetings, all $40$ chameleons have that colour?",
+  "answer": "1",
+  "answerValue": 1,
+  "insight": "Each meeting changes every pairwise difference of counts by 0 or ±3, so the differences mod 3 never change. All-blue needs red = green = 0, so red − green ≡ 0 (mod 3), and so on.",
+  "techniques": [
+    "invariant-mod-n"
+  ],
+  "redHerring": "Trying meeting sequences by hand.",
+  "hints": [
+    "What happens to (red − green) when a red meets a blue?",
+    "Every difference of two counts changes by 0 or $\\pm3$.",
+    "To end all one colour, the other two counts must both be 0. Check each difference mod 3, then check that the reachable colour is actually reachable."
+  ],
+  "solution": "A meeting changes two counts by $-1$ and the third by $+2$, so each pairwise difference changes by $0$ or $\\pm3$. Differences mod 3 are invariant.\n\nAll blue needs $R-G\\equiv0$, but $10-14=-4\\equiv2$: impossible. All red needs $G-B\\equiv0$, but $-2$: impossible. All green needs $R-B\\equiv0$: $10-16=-6\\equiv0$. ✓ And it is reachable: 10 red–blue meetings give $(0,34,6)$; a green–blue meeting gives $(2,33,5)$; 2 red–blue give $(0,37,3)$; green–blue gives $(2,36,2)$; 2 red–blue give $(0,40,0)$. So exactly $1$ colour.",
+  "verify": {
+    "kind": "exact",
+    "code": "function run(){\n  // Breadth-first search over every reachable (red, green, blue) state.\n  const seen = new Set(), queue = [[10, 14, 16]];\n  seen.add(\"10,14,16\");\n  while (queue.length) {\n    const s = queue.shift();\n    for (let i = 0; i < 3; i++) for (let j = i + 1; j < 3; j++) {\n      if (!s[i] || !s[j]) continue;\n      const t = s.slice(); t[i]--; t[j]--; t[3 - i - j] += 2;\n      const k = t.join(\",\");\n      if (!seen.has(k)) { seen.add(k); queue.push(t); }\n    }\n  }\n  return [\"40,0,0\", \"0,40,0\", \"0,0,40\"].filter(k => seen.has(k)).length;\n}"
+  }
+}

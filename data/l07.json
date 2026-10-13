@@ -1,0 +1,26 @@
+{
+  "id": "l07",
+  "n": 56,
+  "title": "Nim with Three Piles",
+  "category": "logic",
+  "difficulty": 3,
+  "statement": "Two players take turns removing any positive number of stones from a single pile. The player who takes the last stone wins. The piles start at $3$, $5$ and $7$ stones. How many different first moves guarantee a win for the first player?",
+  "answer": "3",
+  "answerValue": 3,
+  "insight": "A position is losing for the player to move exactly when the XOR (nim-sum) of the pile sizes is 0. 3 ⊕ 5 ⊕ 7 = 1, and a winning move is any move that makes the XOR 0.",
+  "techniques": [
+    "nim-sum",
+    "p-positions"
+  ],
+  "redHerring": "Trying to search the game tree by hand.",
+  "hints": [
+    "Find a quantity that is 0 at the end and that every move from 0 makes nonzero.",
+    "Write the pile sizes in binary and XOR them.",
+    "A move on pile $p$ wins iff it changes $p$ to $p \\oplus s$, where $s$ is the current nim-sum. For which piles is that smaller than $p$?"
+  ],
+  "solution": "By Bouton's theorem, the player to move loses iff the nim-sum (XOR) of the piles is $0$. Here $3\\oplus5\\oplus7 = 1$.\n\nA winning move turns some pile $p$ into $p\\oplus1$, which is possible iff $p\\oplus1<p$, i.e. $p$ is odd. All three piles are odd: $3\\to2$, $5\\to4$, $7\\to6$. That's $3$ winning moves.",
+  "verify": {
+    "kind": "exact",
+    "code": "function run(){\n  // Brute-force game search with memoisation; no nim-sum used.\n  const memo = new Map();\n  const win = s => {\n    const k = s.slice().sort((a, b) => a - b).join(\",\");\n    if (memo.has(k)) return memo.get(k);\n    let w = false;\n    for (let i = 0; i < 3 && !w; i++) for (let t = 1; t <= s[i]; t++) {\n      const n = s.slice(); n[i] -= t;\n      if (!win(n)) { w = true; break; }\n    }\n    memo.set(k, w); return w;\n  };\n  const start = [3, 5, 7]; let count = 0;\n  for (let i = 0; i < 3; i++) for (let t = 1; t <= start[i]; t++) { const n = start.slice(); n[i] -= t; if (!win(n)) count++; }\n  return count;\n}"
+  }
+}

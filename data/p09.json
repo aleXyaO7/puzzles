@@ -1,0 +1,26 @@
+{
+  "id": "p09",
+  "n": 9,
+  "title": "Red Side Up",
+  "category": "probability",
+  "difficulty": 1,
+  "statement": "A hat holds three cards: one red on both sides, one white on both sides, and one red on one side and white on the other. You draw a card at random and look at one random side. It is red. What is the probability the other side is also red?",
+  "answer": "2/3",
+  "answerValue": 0.6666666666666666,
+  "insight": "Condition on faces, not cards: there are three equally likely red faces and two of them belong to the red-red card.",
+  "techniques": [
+    "bayes",
+    "count-equally-likely-outcomes"
+  ],
+  "redHerring": "Saying 1/2 because 'it is either the red-red card or the mixed card'. Those two cards are not equally likely given what you saw.",
+  "hints": [
+    "What are the equally likely outcomes of drawing a card and showing a side?",
+    "There are 6 equally likely (card, side) outcomes. How many show red?",
+    "Of the red faces, how many have red on the back?"
+  ],
+  "solution": "Each of the 6 faces is equally likely to be the one shown. Three are red: two on the red-red card, one on the mixed card. Given red is showing, the other side is red in 2 of these 3 cases: $\\tfrac23$.",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  const cards = [[\"R\",\"R\"],[\"W\",\"W\"],[\"R\",\"W\"]];\n  return mc(400000, () => {\n    const c = cards[randInt(0, 2)], s = randInt(0, 1);\n    if (c[s] !== \"R\") return null;\n    return c[1 - s] === \"R\" ? 1 : 0;\n  });\n}"
+  }
+}

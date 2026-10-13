@@ -1,0 +1,26 @@
+{
+  "id": "p05",
+  "n": 5,
+  "title": "Every Face of the Die",
+  "category": "probability",
+  "difficulty": 1,
+  "statement": "You roll a fair six-sided die until every face has appeared at least once. What is the expected number of rolls?",
+  "answer": "14.7",
+  "answerValue": 14.7,
+  "insight": "Split the wait into phases: after seeing k faces, the wait for a new one is geometric with success probability (6−k)/6.",
+  "techniques": [
+    "phase-decomposition",
+    "geometric-waiting-times"
+  ],
+  "redHerring": "Trying to compute the probability that all faces have appeared within n rolls and summing tails.",
+  "hints": [
+    "Break the process into stages by how many distinct faces you have seen.",
+    "Once you have seen $k$ faces, what is the chance the next roll is new?",
+    "A geometric wait with success probability $p$ has mean $1/p$."
+  ],
+  "solution": "After $k$ distinct faces, each roll is new with probability $\\tfrac{6-k}{6}$, so that phase lasts $\\tfrac{6}{6-k}$ rolls on average.\n\nTotal: $6\\left(\\tfrac16+\\tfrac15+\\tfrac14+\\tfrac13+\\tfrac12+1\\right) = 6\\cdot 2.45 = 14.7$.",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  return mc(300000, () => {\n    const seen = new Set(); let n = 0;\n    while (seen.size < 6) { seen.add(randInt(1, 6)); n++; }\n    return n;\n  });\n}"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "m04",
+  "n": 23,
+  "title": "Zeros at the End of 100!",
+  "category": "math",
+  "difficulty": 1,
+  "statement": "How many zeros does $100!$ end with?",
+  "answer": "24",
+  "answerValue": 24,
+  "insight": "Each trailing zero needs a factor 10 = 2·5, and fives are scarcer. Count multiples of 5, then extra fives from multiples of 25.",
+  "techniques": [
+    "prime-counting",
+    "legendre-formula"
+  ],
+  "redHerring": "Counting multiples of 10 only (giving 10 or 11).",
+  "hints": [
+    "A trailing zero is a factor of 10. Which prime is the bottleneck?",
+    "Count multiples of 5 up to 100.",
+    "Numbers like 25 and 75 contribute two fives."
+  ],
+  "solution": "Trailing zeros = number of factors of 5 in $100!$ (twos are plentiful): $\\lfloor 100/5\\rfloor + \\lfloor 100/25\\rfloor = 20 + 4 = 24$.",
+  "verify": {
+    "kind": "exact",
+    "code": "function run(){\n  let f = 1n; for (let i = 1n; i <= 100n; i++) f *= i;\n  const s = f.toString(); let z = 0;\n  for (let i = s.length - 1; s[i] === \"0\"; i--) z++;\n  return z;\n}"
+  }
+}

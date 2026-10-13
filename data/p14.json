@@ -1,0 +1,26 @@
+{
+  "id": "p14",
+  "n": 14,
+  "title": "The Frog on the Clock",
+  "category": "probability",
+  "difficulty": 3,
+  "statement": "A frog sits on the $12$ of a clock face. Each minute it jumps to one of the two adjacent hours with equal probability. What is the probability that $6$ is the last hour to be visited for the first time?",
+  "answer": "1/11",
+  "answerValue": 0.09090909090909091,
+  "insight": "For an hour to be last, the frog must reach one neighbour of it and then go all the way round to the other neighbour first. That probability is the same for every hour.",
+  "techniques": [
+    "last-visit-argument",
+    "symmetry"
+  ],
+  "redHerring": "Building a Markov chain on (visited arc, position) states.",
+  "hints": [
+    "When hour 6 is last, where must the frog be just before visiting it?",
+    "Eventually the frog first reaches 5 or 7. Say 5. Hour 6 is last iff it reaches 7 before 6, going the long way round.",
+    "From 5, reaching 7 before 6 is a fair walk on a path of length 11 started one step from the end."
+  ],
+  "solution": "The frog will first hit one neighbour of 6, say 5. From then on, 6 is last iff the frog reaches 7 (the long way round) before stepping to 6.\n\nOn the 11-step path $6,5,4,\\dots,7$, the frog starts 1 step from 6 and 10 from 7. By the fair-walk (gambler's ruin) formula, it reaches 7 first with probability $\\tfrac1{11}$. This holds for any target hour, so each of the 11 hours is last with probability $\\tfrac1{11}$.",
+  "verify": {
+    "kind": "simulation",
+    "code": "function run(){\n  return mc(200000, () => {\n    const seen = new Array(12).fill(false); seen[0] = true;\n    let pos = 0, count = 1, last = 0;\n    while (count < 12) {\n      pos = (pos + (Math.random() < 0.5 ? 1 : 11)) % 12;\n      if (!seen[pos]) { seen[pos] = true; count++; last = pos; }\n    }\n    return last === 6 ? 1 : 0;\n  });\n}"
+  }
+}

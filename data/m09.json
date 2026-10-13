@@ -1,0 +1,26 @@
+{
+  "id": "m09",
+  "n": 28,
+  "title": "All the Digits",
+  "category": "math",
+  "difficulty": 2,
+  "statement": "What is the sum of all the digits of all the integers from $1$ to $999{,}999$?",
+  "answer": "27,000,000",
+  "answerValue": 27000000,
+  "insight": "Pad every number to six digits with leading zeros: then each position runs through 0–9 equally often.",
+  "techniques": [
+    "padding-symmetry",
+    "uniform-digit-distribution"
+  ],
+  "redHerring": "Summing digit totals block by block for 1–9, 10–99, 100–999, ...",
+  "hints": [
+    "Including 0 and padding to 6 digits doesn't change the digit sum.",
+    "Among 000000–999999, how often does each digit appear in a given position?",
+    "Each position contributes $100{,}000 \\cdot (0+1+\\dots+9)$."
+  ],
+  "solution": "Write $0,\\dots,999{,}999$ as six-digit strings. Each position shows each digit $10^5$ times. Total: $6 \\cdot 10^5 \\cdot 45 = 27{,}000{,}000$.",
+  "verify": {
+    "kind": "exact",
+    "code": "function run(){\n  let s = 0;\n  for (let n = 1; n <= 999999; n++) { let x = n; while (x) { s += x % 10; x = (x / 10) | 0; } }\n  return s;\n}"
+  }
+}

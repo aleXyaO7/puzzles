@@ -1,0 +1,25 @@
+{
+  "id": "m19",
+  "n": 38,
+  "title": "A Repeated Digit",
+  "category": "math",
+  "difficulty": 1,
+  "statement": "How many four-digit numbers (from $1000$ to $9999$) have at least one repeated digit?",
+  "answer": "4464",
+  "answerValue": 4464,
+  "insight": "Count the complement: four-digit numbers with all digits distinct are 9·9·8·7.",
+  "techniques": [
+    "complementary-counting"
+  ],
+  "redHerring": "Casework on which positions repeat and how many times.",
+  "hints": [
+    "'At least one' is often easier through its opposite.",
+    "Count four-digit numbers with all distinct digits.",
+    "First digit: 9 choices (not 0). Then 9, 8, 7."
+  ],
+  "solution": "All-distinct four-digit numbers: $9\\cdot9\\cdot8\\cdot7 = 4536$. Total four-digit numbers: $9000$. So $9000 - 4536 = 4464$ have a repeat.",
+  "verify": {
+    "kind": "exact",
+    "code": "function run(){\n  let c = 0;\n  for (let n = 1000; n <= 9999; n++) if (new Set(String(n)).size < 4) c++;\n  return c;\n}"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "p13",
+  "n": 13,
+  "title": "The Self-Reinforcing Urn",
+  "category": "probability",
+  "difficulty": 3,
+  "statement": "An urn starts with one red and one blue ball. Ten times, you draw a ball at random, then return it along with one extra ball of the same color. What is the probability that exactly $5$ of the $10$ draws were red?",
+  "answer": "1/11",
+  "answerValue": 0.09090909090909091,
+  "insight": "Any specific sequence with k reds has the same probability k!(10−k)!/11!, so the number of reds is uniform on 0..10.",
+  "techniques": [
+    "exchangeability",
+    "hidden-uniformity"
+  ],
+  "redHerring": "Tracking the urn draw by draw with a large probability tree.",
+  "hints": [
+    "Compute the probability of a specific sequence, say RRB. Then try RBR.",
+    "The numerators multiply $1\\cdot2\\cdots$ for reds and $1\\cdot2\\cdots$ for blues, in whatever order they come.",
+    "So every sequence with $k$ reds has probability $\\tfrac{k!(10-k)!}{11!}$. Multiply by the number of such sequences."
+  ],
+  "solution": "For any sequence with $k$ reds and $10-k$ blues, the denominators are $2,3,\\dots,11$ and the numerators are $1,2,\\dots,k$ for reds and $1,2,\\dots,10-k$ for blues. So the probability is $\\tfrac{k!(10-k)!}{11!}$ regardless of order.\n\n$P(k \\text{ reds}) = \\binom{10}{k}\\tfrac{k!(10-k)!}{11!} = \\tfrac{10!}{11!} = \\tfrac1{11}$ for every $k$.",
+  "verify": {
+    "kind": "exact",
+    "code": "function run(){\n  // Exact dynamic program over the urn's contents.\n  let dist = new Map([[\"1,1\", 1]]);\n  for (let step = 0; step < 10; step++) {\n    const next = new Map();\n    for (const [key, p] of dist) {\n      const [r, b] = key.split(\",\").map(Number);\n      const add = (k, q) => next.set(k, (next.get(k) || 0) + q);\n      add((r + 1) + \",\" + b, p * r / (r + b));\n      add(r + \",\" + (b + 1), p * b / (r + b));\n    }\n    dist = next;\n  }\n  return dist.get(\"6,6\") || 0; // 5 reds drawn -> 6 red, 6 blue\n}"
+  }
+}

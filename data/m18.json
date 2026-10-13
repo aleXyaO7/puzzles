@@ -1,0 +1,26 @@
+{
+  "id": "m18",
+  "n": 37,
+  "title": "Every Second Person",
+  "category": "math",
+  "difficulty": 2,
+  "statement": "$100$ people stand in a circle, numbered $1$ to $100$. Starting with person $2$, every second remaining person is eliminated (2, 4, 6, …, wrapping around) until one remains. What is the survivor's number?",
+  "answer": "73",
+  "answerValue": 73,
+  "insight": "After one lap of a 2^m circle person 1 survives; in general remove the excess over the largest power of 2 first. In binary, the leading 1 rotates to the end.",
+  "techniques": [
+    "reduce-to-power-of-two",
+    "binary-representation"
+  ],
+  "redHerring": "Simulating by hand.",
+  "hints": [
+    "Solve it for $n = 1, 2, 4, 8, 16$. Who survives?",
+    "With $2^m$ people, person 1 survives. With $n = 2^m + L$, eliminate $L$ people first.",
+    "After $L$ eliminations, the person next in line is $2L+1$, and $2^m$ people remain."
+  ],
+  "solution": "If $n = 2^m$, each lap halves the circle and person 1 always starts the next lap, so person 1 survives. For $n = 2^m + L$, after $L$ eliminations (persons $2,4,\\dots,2L$) we have $2^m$ people starting at $2L+1$, who survives.\n\n$100 = 64 + 36$, so the survivor is $2\\cdot36+1 = 73$.",
+  "verify": {
+    "kind": "exact",
+    "code": "function run(){\n  const a = range(1, 100); let i = 1;\n  while (a.length > 1) { a.splice(i, 1); i = (i + 1) % a.length; if (a.length === 1) break; i = i % a.length; }\n  return a[0];\n}"
+  }
+}

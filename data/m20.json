@@ -1,0 +1,26 @@
+{
+  "id": "m20",
+  "n": 39,
+  "title": "Sum Over All Subsets",
+  "category": "math",
+  "difficulty": 2,
+  "statement": "For each of the $1024$ subsets of $\\{1, 2, \\dots, 10\\}$, add up its elements (the empty set has sum $0$). What is the total of all these sums?",
+  "answer": "28,160",
+  "answerValue": 28160,
+  "insight": "Swap the order of summation: each element appears in exactly 2^9 subsets, so the total is 512·(1+…+10).",
+  "techniques": [
+    "double-counting",
+    "swap-summation-order"
+  ],
+  "redHerring": "Grouping subsets by size and summing over each size.",
+  "hints": [
+    "Instead of going subset by subset, go element by element.",
+    "In how many subsets does the element 7 appear?",
+    "Each element appears in $2^9 = 512$ subsets."
+  ],
+  "solution": "Count each element's contribution: element $k$ appears in $2^9 = 512$ subsets (choose freely whether each other element is in). Total $= 512\\cdot(1+\\dots+10) = 512\\cdot55 = 28{,}160$.",
+  "verify": {
+    "kind": "exact",
+    "code": "function run(){\n  let t = 0;\n  for (let m = 0; m < 1024; m++) for (let k = 0; k < 10; k++) if (m >> k & 1) t += k + 1;\n  return t;\n}"
+  }
+}
